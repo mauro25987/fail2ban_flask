@@ -1,14 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fail2Ban Panel</title>
-</head>
-<body>
-    {% for i in data.split('\n') %}
-        {{ i }}<br>
-    {% endfor %}
-</body>
-</html>
+{% extends 'layout.html' %}
+
+{% block title %}Fail2Ban Panel{% endblock %}
+
+{% block body %}
+    <nav class="navbar bg-body-tertiary">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Fail2Ban Dashboard</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            {% include '_message.html' %}
+            <div class="col">
+                {% for i in status.split('\n') %}
+                    {{ i }}<br>
+                {% endfor %}
+            </div>
+            <div class="col">
+                Ban List<br>
+                {% for i in getban.split('\n') %}
+                    {{ i }}<br>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <form action="{{ url_for('add_ban') }}" method="post">
+                    <div class="mb-3">
+                        <label for="ipAddress" class="form-label">IP</label>
+                        <input type="text" class="form-control" id="ipAddress" name="ipAddress">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ban</button>
+                </form>
+            </div>
+            <div class="col">
+                <form action="{{ url_for('remove_ban') }}" method="post">
+                    <div class="mb-3">
+                        <label for="ipAddress" class="form-label">IP</label>
+                        <input type="text" class="form-control" id="ipAddress" name="ipAddress">
+                    </div>
+                    <button type="submit" class="btn btn-danger">Unban</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
