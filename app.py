@@ -11,7 +11,7 @@ app.secret_key = (
 )
 
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def index():
     getban = get('http://127.0.0.1:5000/fail2ban/getban').json()
     status = get('http://127.0.0.1:5000/fail2ban/status').json()
@@ -20,10 +20,9 @@ def index():
         )
 
 
-@app.route('/fail2ban/status', methods=['GET'])
+@app.route('/fail2ban/status')
 def get_status():
-    command = ['docker', 'exec', '-it', 'jovial_bhaskara',
-               'fail2ban-client', 'status']
+    command = ['fail2ban-client', 'status']
     process = subprocess.run(
         command,
         stdout=subprocess.PIPE,
@@ -33,11 +32,10 @@ def get_status():
     return jsonify(result=process.stdout)
 
 
-@app.route('/fail2ban/getban', methods=['GET'])
+@app.route('/fail2ban/getban')
 def get_ban():
-    command = ['docker', 'exec', '-it', 'jovial_bhaskara', 'sqlite3',
-               '/var/lib/fail2ban/fail2ban.sqlite3',
-               'select ip,jail from bips']
+    command = ['sqlite3', '/var/lib/fail2ban/fail2ban.sqlite3',
+               'select ip, jail from bips']
     process = subprocess.run(
         command,
         stdout=subprocess.PIPE,
@@ -49,13 +47,12 @@ def get_ban():
 
 @app.route('/fail2ban/ban', methods=['POST'])
 def add_ban():
-    command = ['docker', 'exec', '-it', 'jovial_bhaskara', 'fail2ban-client',
-               'set', 'sshd', 'banip', request.form.get('ipAddress')]
+    command = ['fail2ban-client', 'set', 'sshd',
+               'banip', request.form.get('ipAddress')]
     process = subprocess.run(
         command,
         stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        encoding="UTF-8"
+        stderr=subprocess.STDOUT
         )
     if process.returncode == 0:
         flash('command success')
@@ -66,13 +63,11 @@ def add_ban():
 
 @app.route('/fail2ban/unban', methods=['POST'])
 def remove_ban():
-    command = ['docker', 'exec', '-it', 'jovial_bhaskara', 'fail2ban-client',
-               'unban', request.form.get('ipAddress')]
+    command = ['fail2ban-client', 'unban', request.form.get('ipAddress')]
     process = subprocess.run(
         command,
         stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        encoding="UTF-8"
+        stderr=subprocess.STDOUT
         )
     if process.returncode == 0:
         flash('command success')
