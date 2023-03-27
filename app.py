@@ -10,12 +10,10 @@ load_dotenv()
 host = os.environ['HOST']
 route1 = os.environ['ROUTE1']
 route2 = os.environ['ROUTE2']
+secret = os.environ['SECRET_KEY']
 
 app = Flask(__name__)
-
-app.secret_key = (
-    'dd9bf2b39ac8f99fc994fe8db39d1e5aa8d974f48f093defc7aed0f0d114c296'
-)
+app.secret_key = secret
 
 
 @app.route('/')
