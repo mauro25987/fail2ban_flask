@@ -11,6 +11,7 @@ host = os.environ['HOST']
 route1 = os.environ['ROUTE1']
 route2 = os.environ['ROUTE2']
 secret = os.environ['SECRET_KEY']
+jail = os.environ['JAIL']
 
 app = Flask(__name__)
 app.secret_key = secret
@@ -54,7 +55,7 @@ def get_ban():
 
 @app.route('/fail2ban/ban', methods=['POST'])
 def add_ban():
-    command = ['ssh', f'root@{host}', 'fail2ban-client', 'set', 'zimbra-smtp',
+    command = ['ssh', f'root@{host}', 'fail2ban-client', 'set', {jail},
                'banip', request.form.get('ipAddress')]
     process = subprocess.run(
         command,

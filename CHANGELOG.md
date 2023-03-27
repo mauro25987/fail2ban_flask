@@ -26,3 +26,9 @@ Fail2ban admin panel in flask app
     - docker compose
     - keys ssh
     - dotenv
+
+## [1.0.4] - 2023-03-27
+
+### Added
+    - env file
+    - readme.me
