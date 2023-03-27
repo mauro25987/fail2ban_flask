@@ -1,0 +1,7 @@
+venv
+.vscode
+.gitignore
+CHANGELOG.md
+docker-compose.yml
+Dockerfile
+README.me

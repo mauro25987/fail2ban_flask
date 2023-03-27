@@ -2,7 +2,14 @@ from flask import (
     Flask, jsonify, render_template, request, redirect, url_for, flash
 )
 from requests import get
+from dotenv import load_dotenv
 import subprocess
+import os
+
+load_dotenv()
+host = os.environ['HOST']
+route1 = os.environ['ROUTE1']
+route2 = os.environ['ROUTE2']
 
 app = Flask(__name__)
 
@@ -22,7 +29,7 @@ def index():
 
 @app.route('/fail2ban/status')
 def get_status():
-    command = ['fail2ban-client', 'status']
+    command = ['ssh', f'root@{host}', 'fail2ban-client', 'status']
     process = subprocess.run(
         command,
         stdout=subprocess.PIPE,
@@ -34,8 +41,10 @@ def get_status():
 
 @app.route('/fail2ban/getban')
 def get_ban():
-    command = ['sqlite3', '/var/lib/fail2ban/fail2ban.sqlite3',
-               'select ip, jail from bips']
+    command = ['ssh', f'root@{host}', f'''for i in `route -n | cut -d' ' -f1`;
+                do if [[ $i != {route1} && $i != {route2}
+                && $i != 'Kernel' && $i != 'Destination' ]]; then
+                echo $i; fi; done''']
     process = subprocess.run(
         command,
         stdout=subprocess.PIPE,
@@ -47,7 +56,7 @@ def get_ban():
 
 @app.route('/fail2ban/ban', methods=['POST'])
 def add_ban():
-    command = ['fail2ban-client', 'set', 'sshd',
+    command = ['ssh', f'root@{host}', 'fail2ban-client', 'set', 'zimbra-smtp',
                'banip', request.form.get('ipAddress')]
     process = subprocess.run(
         command,
@@ -63,7 +72,8 @@ def add_ban():
 
 @app.route('/fail2ban/unban', methods=['POST'])
 def remove_ban():
-    command = ['fail2ban-client', 'unban', request.form.get('ipAddress')]
+    command = ['ssh', f'root@{host}', 'fail2ban-client',
+               'unban', request.form.get('ipAddress')]
     process = subprocess.run(
         command,
         stdout=subprocess.PIPE,
@@ -77,4 +87,4 @@ def remove_ban():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)

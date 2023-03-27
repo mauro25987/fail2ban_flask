@@ -19,3 +19,10 @@ Fail2ban admin panel in flask app
     - fail2ban status
     - fail2ban list bans
     - fail2ban add ban and remove ban
+
+## [1.0.3] - 2023-03-27
+
+### Added
+    - docker compose
+    - keys ssh
+    - dotenv
