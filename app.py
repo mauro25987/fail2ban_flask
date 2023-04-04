@@ -55,7 +55,7 @@ def get_ban():
 
 @app.route('/fail2ban/ban', methods=['POST'])
 def add_ban():
-    command = ['ssh', f'root@{host}', 'fail2ban-client', 'set', {jail},
+    command = ['ssh', f'root@{host}', 'fail2ban-client', 'set', f'{jail}',
                'banip', request.form.get('ipAddress')]
     process = subprocess.run(
         command,
@@ -72,7 +72,7 @@ def add_ban():
 @app.route('/fail2ban/unban', methods=['POST'])
 def remove_ban():
     command = ['ssh', f'root@{host}', 'fail2ban-client',
-               'unban', request.form.get('ipAddress')]
+               'unban', request.form.get('ipAddress2')]
     process = subprocess.run(
         command,
         stdout=subprocess.PIPE,

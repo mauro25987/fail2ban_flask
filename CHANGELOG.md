@@ -32,3 +32,8 @@ Fail2ban admin panel in flask app
 ### Added
     - env file
     - readme.me
+
+## [1.0.5] - 2023-04-04
+
+### Fixed
+    - error for ban
