@@ -4,7 +4,7 @@ services:
   fail2ban_flask:
     container_name: fail2ban_flask
     build: .
-    image: fail2ban-flask:1.0.5
+    image: fail2ban-flask:1.0.6
     volumes:
       - app:/app
     ports:

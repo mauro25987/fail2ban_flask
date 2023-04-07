@@ -3,24 +3,25 @@
 {% block title %}Fail2Ban Panel{% endblock %}
 
 {% block body %}
-    <nav class="navbar bg-body-tertiary">
+    <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('index') }}">Fail2Ban Dashboard</a>
+            <a class="navbar-brand" href="{{ url_for('index') }}">Fail2Ban Dashboard v1.0.6</a>
         </div>
     </nav>
     <div class="container">
         <div class="row">
             {% include '_message.html' %}
             <div class="col">
-                {% for i in status.split('\n') %}
+                {% for i in status %}
                     {{ i }}<br>
                 {% endfor %}
             </div>
             <div class="col">
                 Ban List<br>
-                {% for i in getban.split('\n') %}
+                {% for i in getban %}
                     {{ i }}<br>
                 {% endfor %}
+                <div>Total IPs = {{ getban|length }}</div>
             </div>
             <div class="col">
                 <form action="{{ url_for('add_ban') }}" method="post">
