@@ -21,9 +21,8 @@ app.secret_key = secret
 def index():
     getban = get('http://127.0.0.1:5000/fail2ban/getban').json()
     status = get('http://127.0.0.1:5000/fail2ban/status').json()
-    ban, stat = list(), list()
-    [ban.append(i) for i in getban['result'].split('\n') if i != '']
-    [stat.append(i) for i in status['result'].split('\n')]
+    ban = [i for i in getban['result'].split('\n') if i != '']
+    stat = [i for i in status['result'].split('\n')]
     return render_template(
         'index.html', getban=ban, status=stat
         )

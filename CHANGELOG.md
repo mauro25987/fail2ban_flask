@@ -42,3 +42,8 @@ Fail2ban admin panel in flask app
 
 ### Added
     - show count total ips banned
+
+## [1.0.7] - 2023-04-10
+
+### Fixed
+    - comprehension list for ban and stat
