@@ -2,9 +2,9 @@ version: "3.9"
 
 services:
   fail2ban_flask:
-    container_name: fail2ban_flask
+    container_name: flask_fail2ban
     build: .
-    image: fail2ban-flask:1.0.7
+    image: flask_fail2ban:1.0.7
     volumes:
       - app:/app
     ports:
